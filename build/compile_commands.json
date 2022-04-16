@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/build",
+  "command": "/usr/bin/cc   -std=gnu17 -o CMakeFiles/gravity_game.dir/main.c.o -c /home/artqs01/Dane/MojeZabawyCCpp/gravity_game/main.c",
+  "file": "/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/main.c"
+}
+]
