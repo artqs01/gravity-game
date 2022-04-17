@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/gravity_game.dir/main.c.o -o gravity_game  -lallegro -lallegro_primitives 
