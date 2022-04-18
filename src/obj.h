@@ -3,8 +3,8 @@
 
 #include "vect2.h"
 
-#define G_CONST 1000
-#define COR 0.7f
+#define G_CONST 10
+#define COR 0.5f
 #define PAST_POSITIONS_NUM 128
 
 typedef struct obj
@@ -13,6 +13,7 @@ typedef struct obj
     float mass;
     vect2 position;
     vect2 velocity;
+    vect2 acceleration;
     vect2 past_positions[PAST_POSITIONS_NUM];
 } obj;
 

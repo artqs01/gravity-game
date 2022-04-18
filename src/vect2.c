@@ -1,5 +1,7 @@
 #include "vect2.h"
 
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/color.h>
 #include <math.h>
 
 vect2 vect2_add(vect2 v1, vect2 v2)
@@ -64,4 +66,10 @@ float vect2_len(vect2 v)
 float vect2_dst(vect2 v1, vect2 v2)
 {
     return vect2_len(vect2_sub(v1, v2));
+}
+
+void draw_v(vect2 position, vect2 value, float scale, ALLEGRO_COLOR color)
+{
+    // al_draw_line(position.x, position.y, position.x + value.x * scale, position.y + value.y * scale, color, 1.0f);
+    // al_draw_filled_circle(position.x + value.x * scale, position.y + value.y * scale, 3.0f, color);
 }

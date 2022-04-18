@@ -1,6 +1,7 @@
 #ifndef VECT2_H
 #define VECT2_H
 
+#include <allegro5/color.h>
 typedef struct vect2
 {
     float x;
@@ -18,5 +19,6 @@ float vect2_dot(vect2 v1, vect2 v2);
 float vect2_det(vect2 v1, vect2 v2);
 float vect2_len(vect2 v);
 float vect2_dst(vect2 v1, vect2 v2);
+void draw_v(vect2 position, vect2 value, float scale, ALLEGRO_COLOR color);
 
 #endif
