@@ -1,14 +1,16 @@
 #include "obj.h"
+#include "draw.h"
 #include "vect2.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/altime.h>
 #include <allegro5/color.h>
 #include <allegro5/events.h>
 #include <allegro5/keycodes.h>
-#include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
-#include <stdlib.h>
+#include <string.h>
 
 float rand_f(float down, float up)
 {
@@ -51,20 +53,45 @@ int main()
     
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    obj arro[20];
-    for (int i = 0; i < 20; i++) 
+    // obj arro[20];
+    // for (int i = 0; i < 20; i++) 
+    // {
+    //     arro[i] = (obj)
+    //     {
+    //         rand_f(3.0, 10.0),
+    //         rand_f(700, 2000),
+    //         (vect2){rand_f(0.0,800.0), rand_f(0.0, 600.0)},
+    //         (vect2){rand_f(-20.0, 20.0), rand_f(-20.0, 20.0)},
+    //     };
+    //     for (int j = 0; j < PAST_POSITIONS_NUM; j++)
+    //     {
+    //         arro[i].past_positions[j] = arro[i].position;
+    //     }
+    // }
+    obj arro[] = 
     {
-        arro[i] = (obj)
         {
-            rand_f(3.0, 10.0),
-            rand_f(700, 2000),
-            (vect2){rand_f(0.0,800.0), rand_f(0.0, 600.0)},
-            (vect2){rand_f(-20.0, 20.0), rand_f(-20.0, 20.0)},
-            {arro[i].position}
-        };
+            50.0,
+            20000.0,
+            (vect2){300.0, 300.0},
+            (vect2){00.0, 0.0}
+        },
+        {
+            10.0,
+            2000.0,
+            (vect2){500.0, 500.0},
+            (vect2){-00.0, 0.0}
+        },
+    };
+    const int size = sizeof(arro) / sizeof(obj);
+
+    for (int i = 0; i < PAST_POSITIONS_NUM; i++)
+    {
+        arro[0].past_positions[i] = arro[0].position;
+        arro[1].past_positions[i] = arro[1].position;
     }
 
-    // Main loop
+    // Main loop 
     int alive = 1;
     double t1 = al_get_time();
     double t2;
@@ -74,7 +101,6 @@ int main()
         t2 = al_get_time();
         dt = t2 - t1;
         t1 = t2;
-        // Checking events from player
 		al_wait_for_event(event_queue, &event);
         do
         {
@@ -82,19 +108,14 @@ int main()
                 if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 			        alive = 0;
         } while (al_get_next_event(event_queue, &event));
-        // Drawing
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-        for (int i = 0; i < 20; i++)
-        {
-                        for (int j = 0; j < 127; j++)
+		draw(arro, size);
+        for (int i = 0; i < size - 1; i++)
+            for (int j = i + 1; j < size; j++)
             {
-                al_draw_line(arro[i].past_positions[j].x, arro[i].past_positions[j].y, arro[i].past_positions[j + 1].x, arro[i].past_positions[j + 1].y,
-                    al_map_rgb(255,255,255), 1.0);
+                if (vect2_dst(arro[i].position, arro[j].position) < arro[i].radius + arro[j].radius)
+                    printf("Nakładają się! dst = %f, R = %f\n", vect2_dst(arro[i].position, arro[j].position), arro[i].radius + arro[j].radius);
             }
-            al_draw_filled_circle(arro[i].position.x, arro[i].position.y, arro[i].radius, al_map_rgb(255,0,0));
-        }
-        obj_update(arro, 20, dt);
-        //printf("al_get_time() = %f, dt = %f, d = %f, v.x = %f, v.y = %f, p.x = %f, p.y = %f \n", t1, dt, obj_mass(arro[0]), arro[0].velocity.x, arro[0].velocity.y, arro[0].position.x, arro[0].position.y);
+        obj_update(arro, size, dt);
 		al_flip_display();
 	}
 

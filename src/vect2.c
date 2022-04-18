@@ -7,7 +7,16 @@ vect2 vect2_add(vect2 v1, vect2 v2)
     return (vect2){v1.x + v2.x, v1.y + v2.y};
 }
 
-vect2 vect2_rot(vect2 v1, vect2 center, float angle)
+vect2 vect2_rot(vect2 v, float angle)
+{
+    return (vect2) 
+        {
+            v.x * cos(angle) - v.y * sin(angle),
+            v.x * sin(angle) + v.y * cos(angle)
+        };
+}
+
+vect2 vect2_rtc(vect2 v1, vect2 center, float angle)
 {
     return vect2_add(center,
         (vect2)

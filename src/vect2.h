@@ -8,7 +8,8 @@ typedef struct vect2
 } vect2;
 
 vect2 vect2_add(vect2 v1, vect2 v2);
-vect2 vect2_rot(vect2 v1, vect2 center, float angle);
+vect2 vect2_rot(vect2 v1, float angle);
+vect2 vect2_rtc(vect2 v1, vect2 center, float angle);
 vect2 vect2_mlf(vect2 v, float f);
 vect2 vect2_neg(vect2 v);
 vect2 vect2_sub(vect2 v, vect2 subtractor);
