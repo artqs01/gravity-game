@@ -96,7 +96,6 @@ void obj_collide(obj* o1, obj* o2)
     float v2_n2 = (o2->mass * v2_n1 + o1->mass * v1_n1 + o1->mass * COR * (v1_n1 - v2_n1)) / (o1->mass + o2->mass);
     o2->velocity.x = n.x * v2_n2 + t.x * v2_t;
     o2->velocity.y = n.y * v2_n2 + t.y * v2_t;
-    //thjdfyjdtygjdtg
 }
 
 float obj_force(obj o1, obj o2)
