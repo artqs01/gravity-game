@@ -14,6 +14,7 @@ void obj_update(obj* arr, int size, float dt)
     }
     float coll_pred_time;
     for (int i = 0; i < size - 1; i++)
+	{
         for (int j = i + 1; j < size; j++)
         {
             vect2 fg = obj_force_vect(arr[i], arr[j]);
@@ -22,7 +23,11 @@ void obj_update(obj* arr, int size, float dt)
 
             arr[j].acceleration = vect2_mlf(fg, -1.0f / arr[j].mass);
             arr[j].velocity = vect2_add(arr[j].velocity, vect2_mlf(arr[j].acceleration, dt));
-            
+           
+
+			arr[i].velocity = vect2_mlf(arr[i].velocity, (1.f - 0.01f * dt));
+			arr[j].velocity = vect2_mlf(arr[j].velocity, (1.f - 0.01f * dt));
+
             coll_pred_time = obj_collision_prediction(&arr[i], &arr[j], dt);
             //printf("coll_pred_time = %f\n", coll_pred_time);
             draw_v(arr[i].position, vect2_mlf(arr[i].velocity, coll_pred_time), 1.0f, al_map_rgb(255, 0, 255));
@@ -31,15 +36,15 @@ void obj_update(obj* arr, int size, float dt)
             {
                 //printf("Przewidziano zderzenie, coll_pred_time = %f\n", coll_pred_time);
                 obj_move(&arr[i], coll_pred_time);
-                obj_move(&arr[j], coll_pred_time);
+                //obj_move(&arr[j], coll_pred_time);
                 obj_collide(&arr[i], &arr[j]);
                 obj_move(&arr[i], dt - coll_pred_time);
-                obj_move(&arr[j], dt - coll_pred_time);
+                //obj_move(&arr[j], dt - coll_pred_time);
             }
             else
             {
                 obj_move(&arr[i], dt);
-                obj_move(&arr[j], dt);
+                //obj_move(&arr[j], dt);
             }
             // if (vect2_dst(arr[i].position, arr[j].position) <= arr[i].radius + arr[j].radius)
             // {
@@ -48,7 +53,18 @@ void obj_update(obj* arr, int size, float dt)
             // }
             // obj_move(&arr[i], dt);
             // obj_move(&arr[j], dt);
+			//
+			
         }
+
+		obj *o = &arr[i];
+		for (int i = PAST_POSITIONS_NUM - 1; i > 0; i--)
+		{
+        	o->past_positions[i] = o->past_positions[i - 1];
+		}
+		o->past_positions[0] = o->position;
+
+	}
 }
 //vect2_dst(arr[i].position, arr[j].position) <= arr[i].radius + arr[j].radius
 
@@ -63,22 +79,19 @@ void obj_update(obj* arr, int size, float dt)
 
 void obj_move(obj* o, float dt)
 {
-    for (int i = PAST_POSITIONS_NUM - 1; i > 0; i--)
-    {
-        o->past_positions[i] = o->past_positions[i - 1];
-    }
-    o->past_positions[0] = o->position;
-    o->position = vect2_add(o->position, vect2_mlf(o->velocity, dt));
+        o->position = vect2_add(o->position, vect2_mlf(o->velocity, dt));
 }
 
 void obj_collide(obj* o1, obj* o2)
 {
+	float inv_mass_sum = 1.f / (o1->mass + o2->mass);
     float overlap = o1->radius + o2->radius - vect2_dst(o1->position, o2->position);
-    if (overlap > 0)
+    if (overlap > 0.f)
     {
+		float percent = 1.0f;
         vect2 n = vect2_nrm(vect2_sub(o1->position, o2->position));
-        o1->position = vect2_add(o1->position, vect2_mlf(n, overlap * o2->mass / (o1->mass + o2->mass)));
-        o2->position = vect2_add(o2->position, vect2_mlf(n, -overlap * o1->mass / (o1->mass + o2->mass)));
+        o1->position = vect2_add(o1->position, vect2_mlf(n, overlap * percent * o2->mass / (o1->mass + o2->mass)));
+        o2->position = vect2_add(o2->position, vect2_mlf(n, -overlap * percent * o1->mass / (o1->mass + o2->mass)));
     }
     
     al_draw_line(o1->position.x, o1->position.y, o2->position.x, o2->position.y, al_map_rgb(0,0,255), 5.0);
@@ -88,6 +101,9 @@ void obj_collide(obj* o1, obj* o2)
     float v1_t = vect2_dot(t, o1->velocity);
     float v2_n1 = vect2_dot(n, o2->velocity);
     float v2_t = vect2_dot(t, o2->velocity);
+
+	if (v1_n1 - v2_n1 > 0)
+		return;
 
     float v1_n2 = (o1->mass * v1_n1 + o2->mass * v2_n1 + o2->mass * COR * (v2_n1 - v1_n1)) / (o1->mass + o2->mass);
     o1->velocity.x = n.x * v1_n2 + t.x * v1_t;
@@ -100,7 +116,7 @@ void obj_collide(obj* o1, obj* o2)
 
 float obj_force(obj o1, obj o2)
 {
-    float f = o1.mass * o2.mass / vect2_dst(o1.position, o2.position) / vect2_dst(o1.position, o2.position) * G_CONST;
+    float f = o1.mass * o2.mass / (vect2_dst(o1.position, o2.position) * vect2_dst(o1.position, o2.position)) * G_CONST;
     // if (f > 10000)
     //     return 10000.f;
     // else
@@ -109,11 +125,13 @@ float obj_force(obj o1, obj o2)
 
 float obj_collision_prediction(obj* o1, obj* o2, float dt)
 {
-    float a = (o1->velocity.x - o2->velocity.x) * (o1->velocity.x - o2->velocity.x) +
+	float dvx = o1->velocity.x - o2->velocity.x;
+
+    float a = dvx * dvx +
               (o1->velocity.y - o2->velocity.y) * (o1->velocity.y - o2->velocity.y);
     if (a <= 0)
         return -1;
-    float b = 2.f * ((o1->velocity.x - o2->velocity.x) * (o1->position.x - o2->position.x) +
+    float b = 2.f * (dvx * (o1->position.x - o2->position.x) +
                      (o1->velocity.y - o2->velocity.y) * (o1->position.y - o2->position.y));
     float c = (o1->position.x - o2->position.x) * (o1->position.x - o2->position.x) +
               (o1->position.y - o2->position.y) * (o1->position.y - o2->position.y) -

@@ -3,8 +3,8 @@
 
 #include "vect2.h"
 
-#define G_CONST 10
-#define COR 0.5f
+#define G_CONST 100
+#define COR 0.2f
 #define PAST_POSITIONS_NUM 128
 
 typedef struct obj

@@ -53,15 +53,16 @@ int main()
     
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    obj arro[50];
-    for (int i = 0; i < 50; i++) 
+    obj arro[75];
+	float vvar = 20.f;
+    for (int i = 0; i < sizeof(arro)/sizeof(arro[0]); i++) 
     {
         arro[i] = (obj)
         {
-            rand_f(10.0, 10.0),
-            rand_f(100, 100),
+            rand_f(10.0, 30.0),
+            rand_f(50, 100),
             (vect2){rand_f(0.0,800.0), rand_f(0.0, 600.0)},
-            (vect2){rand_f(0.0, 0.0), rand_f(0.0, 0.0)},
+            (vect2){rand_f(-vvar, vvar), rand_f(-vvar, vvar)},
         };
         for (int j = 0; j < PAST_POSITIONS_NUM; j++)
         {
