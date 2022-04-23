@@ -53,43 +53,16 @@ int main()
     
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    obj arro[50];
-    for (int i = 0; i < 50; i++) 
+    obj arro[100];
+    for (int i = 0; i < 100; i++) 
     {
-        arro[i] = (obj)
-        {
+        arro[i] = obj_create(
             rand_f(10.0, 10.0),
             rand_f(100, 100),
-            (vect2){rand_f(0.0,800.0), rand_f(0.0, 600.0)},
-            (vect2){rand_f(0.0, 0.0), rand_f(0.0, 0.0)},
-        };
-        for (int j = 0; j < PAST_POSITIONS_NUM; j++)
-        {
-            arro[i].past_positions[j] = arro[i].position;
-        }
+            (vect2){rand_f(0.0,800.0),rand_f(0.0, 600.0)},
+            (vect2){rand_f(0.0, 0.0), rand_f(0.0, 0.0)});
     }
-    // obj arro[] = 
-    // {
-    //     {
-    //         50.0,
-    //         20000.0,
-    //         (vect2){300.0, 300.0},
-    //         (vect2){00.0, 0.0}
-    //     },
-    //     {
-    //         10.0,
-    //         2000.0,
-    //         (vect2){500.0, 500.0},
-    //         (vect2){-00.0, 0.0}
-    //     },
-    // };
     const int size = sizeof(arro) / sizeof(obj);
-
-    for (int i = 0; i < PAST_POSITIONS_NUM; i++)
-    {
-        arro[0].past_positions[i] = arro[0].position;
-        arro[1].past_positions[i] = arro[1].position;
-    }
 
     // Main loop 
     int alive = 1;
@@ -140,7 +113,7 @@ int main()
             al_flip_display();
         }
 	}
-
+    
     // Cleaning up
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
