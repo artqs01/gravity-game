@@ -14,8 +14,7 @@ void draw(obj* arr, int size)
             al_draw_line(arr[i].past_p[j].x, arr[i].past_p[j].y, arr[i].past_p[j + 1].x, arr[i].past_p[j + 1].y,
             al_map_rgb(255,255,255), 1.0);
         }
-        al_draw_circle(arr[i].p.x, arr[i].p.y, arr[i].r, al_map_rgb(255,0,0), 1.0);
-        draw_v(arr[i].p, arr[i].v, 5.0, al_map_rgb(255, 255, 0));
-        draw_v(arr[i].p, arr[i].dv, 100.0, al_map_rgb(0,255,0));
+        // al_draw_filled_circle(arr[i].p.x, arr[i].p.y, arr[i].r, al_map_rgb(100,0,0));
+        al_draw_circle(arr[i].p.x, arr[i].p.y, arr[i].r, (arr[i].q >= 0) ? al_map_rgb(255,0,0) : al_map_rgb(0,0,255), 2.0f);
     }
 }

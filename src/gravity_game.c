@@ -59,8 +59,9 @@ int main()
         arro[i] = obj_create(
             rand_f(10.0, 10.0),
             rand_f(100, 100),
+            rand_f(-1000, 1000),
             (vect2){rand_f(0.0,800.0),rand_f(0.0, 600.0)},
-            (vect2){rand_f(0.0, 0.0), rand_f(0.0, 0.0)});
+            (vect2){rand_f(-2.0, 2.0), rand_f(-2.0, 2.0)});
     }
     const int size = sizeof(arro) / sizeof(obj);
 
