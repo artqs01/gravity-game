@@ -96,7 +96,7 @@ void obj_update_wrong(obj* arr, int size, float dt)
 		}
 }
 //vect2_dst(arr[i].position, arr[j].position) <= arr[i].radius + arr[j].radius
-
+//tghfhfth
 // void obj_interact(obj* o1, obj* o2, float dt)
 // {
 //     vect2 f = vect2_mlf(vec);
