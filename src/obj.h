@@ -4,7 +4,7 @@
 #include "vect2.h"
 
 #define G_CONST 6
-#define COR 0.5f
+#define COR 0.7f
 #define PAST_POSITIONS_NUM 128
 #define DAMPING_CONST 1.f
 

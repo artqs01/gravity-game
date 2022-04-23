@@ -44,67 +44,9 @@ void obj_update(obj* arr, int size, float dt)
 		}
 		arr[i].v = vect2_add(arr[i].v, vect2_mlf(arr[i].dv, dt));
 		arr[i].v = vect2_mlf(arr[i].v, 1.0f - DAMPING_CONST * dt);
-	}
-	for (int i = 0; i < size; i++)
-	{
 		arr[i].dv = (vect2){0,0};
 	}
 }
-
-void obj_update_wrong(obj* arr, int size, float dt)
-{
-	for (int i = 0; i < size; i++)
-	{
-		arr[i].dv = (vect2){0,0};
-	}
-	float coll_pred_time;
-	for (int i = 0; i < size - 1; i++)
-		for (int j = i + 1; j < size; j++)
-		{
-			vect2 fg = obj_force_vect(arr[i], arr[j]);
-			arr[i].dv = vect2_mlf(fg, 1.0f / arr[i].m);
-			arr[i].v = vect2_add(arr[i].v, vect2_mlf(arr[i].dv, dt));
-
-			arr[j].dv = vect2_mlf(fg, -1.0f / arr[j].m);
-			arr[j].v = vect2_add(arr[j].v, vect2_mlf(arr[j].dv, dt));
-			
-			coll_pred_time = obj_collision_prediction(&arr[i], &arr[j]);
-			//printf("coll_pred_time = %f\n", coll_pred_time);
-			draw_v(arr[i].p, vect2_mlf(arr[i].v, coll_pred_time), 1.0f, al_map_rgb(255, 0, 255));
-			draw_v(arr[j].p, vect2_mlf(arr[j].v, coll_pred_time), 1.0f, al_map_rgb(255, 0, 255));
-			if (coll_pred_time >= 0 && coll_pred_time < dt)
-			{
-				//printf("Przewidziano zderzenie, coll_pred_time = %f\n", coll_pred_time);
-				obj_move(&arr[i], coll_pred_time);
-				obj_move(&arr[j], coll_pred_time);
-				obj_collide(&arr[i], &arr[j]);
-				obj_move(&arr[i], dt - coll_pred_time);
-				obj_move(&arr[j], dt - coll_pred_time);
-			}
-			else
-			{
-				obj_move(&arr[i], dt);
-				obj_move(&arr[j], dt);
-			}
-			// if (vect2_dst(arr[i].position, arr[j].position) <= arr[i].radius + arr[j].radius)
-			// {
-			//     printf("Wykryto zderzenie, dst = %f\n", vect2_dst(arr[i].position, arr[j].position));
-			//     obj_collide(&arr[i], &arr[j]);
-			// }
-			// obj_move(&arr[i], dt);
-			// obj_move(&arr[j], dt);
-		}
-}
-//vect2_dst(arr[i].position, arr[j].position) <= arr[i].radius + arr[j].radius
-//tghfhfth
-// void obj_interact(obj* o1, obj* o2, float dt)
-// {
-//     vect2 f = vect2_mlf(vec);
-//     draw_v(o1->position, acceleration, 10.0, al_map_rgb(0, 255, 0));
-//     draw_v(o2->position, vect2_neg(acceleration), 10.0, al_map_rgb(0, 255, 0));
-//     o1->velocity = vect2_add(o1->velocity, vect2_mlf(vect2_mlf(obj_force_vect(*o1, *o2), 1 / o1->mass), dt));
-//     o2->velocity = vect2_add(o2->velocity, vect2_mlf(vect2_mlf(obj_force_vect(*o2, *o1), 1 / o2->mass), dt));
-// }
 
 void obj_move(obj* o, float dt)
 {
