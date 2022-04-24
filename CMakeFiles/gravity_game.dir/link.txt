@@ -1,1 +1,0 @@
-/usr/bin/cc -Wall -Wextra -rdynamic CMakeFiles/gravity_game.dir/src/gravity_game.c.o CMakeFiles/gravity_game.dir/src/vect2.c.o CMakeFiles/gravity_game.dir/src/obj.c.o CMakeFiles/gravity_game.dir/src/draw.c.o -o gravity_game  -lallegro -lallegro_primitives -lallegro_font -lallegro_ttf -lm 

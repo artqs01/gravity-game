@@ -1,3 +1,0 @@
-/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/CMakeFiles/gravity_game.dir
-/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/CMakeFiles/edit_cache.dir
-/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/CMakeFiles/rebuild_cache.dir

@@ -47,21 +47,17 @@ int main()
         printf("syf al_font_ttf");
         return 1;
     }
-
     // Event queue init
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_EVENT event;
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
-
     // Timer init
     ALLEGRO_TIMER* timer =  al_create_timer(0.013);
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_start_timer(timer);
-
     // Display init
     ALLEGRO_DISPLAY* display = al_create_display(1200, 900);
     al_clear_to_color(al_map_rgb(0, 0, 0));
-
     //Font init
     ALLEGRO_FONT* font = al_load_ttf_font("/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/fonts/consola.ttf", 20, 0);
     if (!font)
@@ -69,25 +65,21 @@ int main()
         printf("\n\nnie zaladowalo fonta\n\n");
         return 1;
     }
-    
     al_register_event_source(event_queue, al_get_keyboard_event_source());
-
-    obj arro[200];
-    for (int i = 0; i < 200; i++) 
-    {
-        arro[i] = obj_create(
-            rand_f(20.f, 30.f),
-            rand_f(200.f, 300.f),
-            rand_f(MIN_Q, MAX_Q),
-            (vect2){rand_f(0.f,1000.f),rand_f(0.f, 1000.f)},
-            (vect2){rand_f(-0.f, 0.f), rand_f(-0.f, 0.f)});
-    }
-    // obj arro[2];
-    // arro[0] = obj_create(20.f, 1000.f, -1000.f, (vect2){300.f, 300.f}, (vect2){10.f, 0.f});
-    // arro[1] = obj_create(10.f, 100.f, 1000.f, (vect2){600.f, 600.f}, (vect2){0.f, -10.f});
-
+    // obj arro[200];
+    // for (int i = 0; i < 200; i++) 
+    // {
+    //     arro[i] = obj_create(
+    //         rand_f(20.f, 30.f),
+    //         rand_f(200.f, 300.f),
+    //         rand_f(MIN_Q, MAX_Q),
+    //         (vect2){rand_f(0.f,1000.f),rand_f(0.f, 1000.f)},
+    //         (vect2){rand_f(-0.f, 0.f), rand_f(-0.f, 0.f)});
+    // }
+    obj arro[2];
+    arro[0] = obj_create(20.f, 1000.f, -1000.f, (vect2){300.f, 300.f}, (vect2){10.f, 0.f});
+    arro[1] = obj_create(10.f, 100.f, 1000.f, (vect2){600.f, 600.f}, (vect2){0.f, -10.f});
     const int size = sizeof(arro) / sizeof(obj);
-
     // Main loop 
     int alive = 1;
     int pause = 0;
@@ -128,16 +120,9 @@ int main()
             al_clear_to_color(al_map_rgb(0, 0, 0));
             obj_update(arro, size, dt);
             draw(arro, size, font);
-            // for (int i = 0; i < size - 1; i++)
-            //     for (int j = i + 1; j < size; j++)
-            //     {
-			//     	if (vect2_dst(arro[i].position, arro[j].position) < arro[i].radius + arro[j].radius)
-            //             printf("Nakładają się! dst = %f, R = %f\n", vect2_dst(arro[i].position, arro[j].position), arro[i].radius + arro[j].radius);
-            //     }
             al_flip_display();
         }
 	}
-    
     // Cleaning up
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);

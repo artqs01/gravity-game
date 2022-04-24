@@ -6,10 +6,9 @@
 #define G_CONST 2.f
 #define K_CONST 3.5f
 #define COR 0.7f
-#define PAST_POSITIONS_NUM 1
 #define DAMPING_CONST 0.1f
 #define MAX_Q 1000.f
-#define MIN_Q -1000.f
+#define MIN_Q -MAX_Q
 
 typedef struct obj
 {
