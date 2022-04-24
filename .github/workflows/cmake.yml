@@ -40,7 +40,6 @@ jobs:
       
   codeql:
     name: "CodeQL analysis"
-    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -51,6 +50,8 @@ jobs:
       matrix:
         language: ['cpp']
     steps:
+      - name: install allegro
+        run: sudo apt-get install liballegro5-dev liballegro-ttf5-dev liballegro-image5-dev
       - name: Checkout
         uses: actions/checkout@v2
       - name: Initialize CodeQL
