@@ -1,7 +1,8 @@
 #include "obj.h"
 #include "draw.h"
-#include "vect2.h"
 
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro5/altime.h>
@@ -36,6 +37,16 @@ int main()
         printf("syf al_primitives");
         return 1;
     }
+    if (!al_init_font_addon())
+    {
+        printf("syf al_font");
+        return 1;
+    }
+    if (!al_init_ttf_addon())
+    {
+        printf("syf al_font_ttf");
+        return 1;
+    }
 
     // Event queue init
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -50,19 +61,31 @@ int main()
     // Display init
     ALLEGRO_DISPLAY* display = al_create_display(1200, 900);
     al_clear_to_color(al_map_rgb(0, 0, 0));
+
+    //Font init
+    ALLEGRO_FONT* font = al_load_ttf_font("/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/fonts/consola.ttf", 20, 0);
+    if (!font)
+    {
+        printf("\n\nnie zaladowalo fonta\n\n");
+        return 1;
+    }
     
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    obj arro[100];
-    for (int i = 0; i < 100; i++) 
+    obj arro[200];
+    for (int i = 0; i < 200; i++) 
     {
         arro[i] = obj_create(
-            rand_f(10.0, 10.0),
-            rand_f(100, 100),
-            rand_f(-1000, 1000),
-            (vect2){rand_f(0.0,800.0),rand_f(0.0, 600.0)},
-            (vect2){rand_f(-2.0, 2.0), rand_f(-2.0, 2.0)});
+            rand_f(20.f, 30.f),
+            rand_f(200.f, 300.f),
+            rand_f(MIN_Q, MAX_Q),
+            (vect2){rand_f(0.f,1000.f),rand_f(0.f, 1000.f)},
+            (vect2){rand_f(-0.f, 0.f), rand_f(-0.f, 0.f)});
     }
+    // obj arro[2];
+    // arro[0] = obj_create(20.f, 1000.f, -1000.f, (vect2){300.f, 300.f}, (vect2){10.f, 0.f});
+    // arro[1] = obj_create(10.f, 100.f, 1000.f, (vect2){600.f, 600.f}, (vect2){0.f, -10.f});
+
     const int size = sizeof(arro) / sizeof(obj);
 
     // Main loop 
@@ -104,7 +127,7 @@ int main()
             }
             al_clear_to_color(al_map_rgb(0, 0, 0));
             obj_update(arro, size, dt);
-            draw(arro, size);
+            draw(arro, size, font);
             // for (int i = 0; i < size - 1; i++)
             //     for (int j = i + 1; j < size; j++)
             //     {
@@ -119,5 +142,6 @@ int main()
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
+    al_destroy_font(font);
     return 0;
 }

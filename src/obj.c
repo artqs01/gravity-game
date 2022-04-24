@@ -9,8 +9,6 @@
 obj obj_create(float r, float m, float q, vect2 p, vect2 v)
 {
 	obj o = {r, m, q, p, v, {0.0f, 0.0f}};
-	for (int i = 0; i < PAST_POSITIONS_NUM; i++)
-		o.past_p[i] = o.p;
 	return o;
 }
 
@@ -52,11 +50,6 @@ void obj_update(obj* arr, int size, float dt)
 
 void obj_move(obj* o, float dt)
 {
-	for (int i = PAST_POSITIONS_NUM - 1; i > 0; i--)
-	{
-		o->past_p[i] = o->past_p[i - 1];
-	}
-	o->past_p[0] = o->p;
 	o->p = vect2_add(o->p, vect2_mlf(o->v, dt));
 }
 
@@ -71,8 +64,8 @@ void obj_collide(obj* o1, obj* o2)
 		o2->p = vect2_add(o2->p, vect2_mlf(n, -overlap * o1->m * inv_mass_sum));
 	}
 	
-	al_draw_line(o1->p.x, o1->p.y, o2->p.x, o2->p.y, al_map_rgb(0,0,255), 5.0f);
-	al_draw_line(o1->p.x, o1->p.y, o2->p.x, o2->p.y, al_map_rgb(255,255,255), 0.5f);
+	al_draw_line(o1->p.x, o1->p.y, o2->p.x, o2->p.y, al_map_rgb(0, 0, 255), 5.0f);
+	al_draw_line(o1->p.x, o1->p.y, o2->p.x, o2->p.y, al_map_rgb(200, 200, 200), 0.3f);
 	vect2 n = vect2_nrm(vect2_sub(o1->p, o2->p));
 	vect2 t = vect2_rot(n, M_PI_2);
 	float v1_n1 = vect2_dot(n, o1->v);

@@ -70,6 +70,6 @@ float vect2_dst(vect2 v1, vect2 v2)
 
 void draw_v(vect2 position, vect2 value, float scale, ALLEGRO_COLOR color)
 {
-    // al_draw_line(position.x, position.y, position.x + value.x * scale, position.y + value.y * scale, color, 1.0f);
-    // al_draw_filled_circle(position.x + value.x * scale, position.y + value.y * scale, 3.0f, color);
+    al_draw_line(position.x, position.y, position.x + value.x * scale, position.y + value.y * scale, color, 1.0f);
+    al_draw_filled_circle(position.x + value.x * scale, position.y + value.y * scale, 3.0f, color);
 }

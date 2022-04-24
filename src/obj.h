@@ -3,11 +3,13 @@
 
 #include "vect2.h"
 
-#define G_CONST 6
-#define K_CONST 50
+#define G_CONST 2.f
+#define K_CONST 3.5f
 #define COR 0.7f
-#define PAST_POSITIONS_NUM 16
-#define DAMPING_CONST 0.5f
+#define PAST_POSITIONS_NUM 1
+#define DAMPING_CONST 0.1f
+#define MAX_Q 1000.f
+#define MIN_Q -1000.f
 
 typedef struct obj
 {
@@ -17,7 +19,6 @@ typedef struct obj
     vect2 p;
     vect2 v;
     vect2 dv;
-    vect2 past_p[PAST_POSITIONS_NUM];
 } obj;
 
 obj obj_create(float radius, float m, float q, vect2 p, vect2 v);
