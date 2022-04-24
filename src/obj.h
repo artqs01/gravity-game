@@ -12,12 +12,12 @@
 
 typedef struct obj
 {
-    float r;
-    float m;
-    float q;
-    vect2 p;
-    vect2 v;
-    vect2 dv;
+	float r;
+	float m;
+	float q;
+	vect2 p;
+	vect2 v;
+	vect2 dv;
 } obj;
 
 obj obj_create(float radius, float m, float q, vect2 p, vect2 v);
