@@ -58,7 +58,7 @@ void ctrl_mouse_state_update(ALLEGRO_MOUSE_STATE* cur_ms, ALLEGRO_MOUSE_STATE* p
 {
 	if (c_ctrl->if_state_changed)
 	{
-		prev_ms = cur_ms;
+		*prev_ms = *cur_ms;
 		c_ctrl->if_state_changed = 0;
 	}
 	al_get_mouse_state(cur_ms);
