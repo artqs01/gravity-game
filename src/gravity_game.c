@@ -8,15 +8,16 @@
 #include <allegro5/display.h>
 #include <allegro5/mouse.h>
 #include <allegro5/transformations.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <allegro5/altime.h>
 #include <allegro5/color.h>
 #include <allegro5/events.h>
 #include <allegro5/keycodes.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include <string.h>
 
 float rand_f(float down, float up)
@@ -27,7 +28,7 @@ float rand_f(float down, float up)
 int main()
 {
 	srand(time(0));
-	
+
 	// Checking if things fail to init
 	allegro_init();
 

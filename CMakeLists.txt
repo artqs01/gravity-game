@@ -11,6 +11,7 @@ add_executable(gravity_game
 	"${PROJECT_SOURCE_DIR}/src/obj.c"
 	"${PROJECT_SOURCE_DIR}/src/draw.c"
 	"${PROJECT_SOURCE_DIR}/src/control.c"
+	"${PROJECT_SOURCE_DIR}/src/init.c"
 )
 target_link_libraries(gravity_game PRIVATE allegro allegro_primitives allegro_font allegro_ttf m)
 target_include_directories(gravity_game PRIVATE "${PROJECT_SOURCE_DIR}/src")
