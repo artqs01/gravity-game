@@ -6,7 +6,7 @@
 #define G_CONST 2.f
 #define K_CONST 3.5f
 #define COR 0.7f
-#define DAMPING_CONST 0.1f
+#define DAMPING_CONST 0.05f
 #define MAX_Q 1000.f
 #define MIN_Q -MAX_Q
 

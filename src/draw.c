@@ -10,9 +10,9 @@
 
 void draw(obj* arr, int size, const ALLEGRO_FONT* font)
 {
+	al_clear_to_color(BACKGROUND_COLOR);
 	for (int i = 0; i < size; i++)
 	{
-		// al_draw_filled_circle(arr[i].p.x, arr[i].p.y, arr[i].r, map_q_on_color(arr[i].q, MIN_Q, MAX_Q));
 		al_draw_circle(arr[i].p.x, arr[i].p.y, arr[i].r, map_q_on_color(arr[i].q, MIN_Q, MAX_Q), 1.7f);
 		char q_c;
 		if (arr[i].q < DISP_0_EPSILON_DOWN)
