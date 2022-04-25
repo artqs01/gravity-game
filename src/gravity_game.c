@@ -84,21 +84,19 @@ int main()
 	}
 
 	//Mouse control init
-	ALLEGRO_MOUSE_STATE ms;
-	al_get_mouse_state(&ms);
-	int previous_ms = ms.z;
+	ALLEGRO_MOUSE_STATE cur_ms;
+	al_get_mouse_state(&cur_ms);
+	ALLEGRO_MOUSE_STATE prev_ms;
 
 	//Camera transformation init
 	ALLEGRO_TRANSFORM transf;
-	cam_ctrl c_ctrl = {0.f, 600.f, 1.f, -1.f, 0.f};
+	ctrl_cam_ctrler c_ctrl = ctrl_create_cam_ctrler();
 
 	// Main loop control variable init
-	loop_ctrl l_ctrl = {1, 0, 0};
+	ctrl_loop_ctrler l_ctrl = ctrl_create_loop_ctrler();
 
 	// Time measure variable init
-	double t1 = al_get_time();
-	double t2;
-	float dt;
+	ctrl_time_ctrler t_ctrl = ctrl_create_time_ctrler();
 
 	// Object initialization
 	// obj arro[200];
@@ -119,31 +117,25 @@ int main()
 	// Main loop
 	while (l_ctrl.alive)
 	{
-		t2 = al_get_time();
-		dt = t2 - t1;
-		t1 = t2;
+		ctrl_measure_dt(&t_ctrl);
 		al_wait_for_event(eq, &e);
-		manage_event(eq, &e, &l_ctrl);
+		ctrl_manage_event(eq, &e, &l_ctrl);
 		if (!l_ctrl.pause)
 		{
-			obj_update(arro, size, dt);
+			obj_update(arro, size, t_ctrl.dt);
 		}
 		if (l_ctrl.step)
 		{
 			l_ctrl.pause = 1;
 			l_ctrl.step = 0;
 		}
-		if (previous_ms != ms.z)
-		{
-			c_ctrl.sx = pow(1.1, ms.z);
-			c_ctrl.sy = -pow(1.1, ms.z);
-			previous_ms = ms.z;
-		}
-		transform(&transf, &c_ctrl);
+		ctrl_set_zoom(&cur_ms, &prev_ms, &c_ctrl);
+		ctrl_transform(&transf, &c_ctrl);
+		ctrl_mouse_state_update(&cur_ms, &prev_ms, &c_ctrl);
 		draw(arro, size, font);
 		al_flip_display();
-		al_get_mouse_state(&ms);
 	}
+	
 	// Cleaning up
 	al_destroy_display(display);
 	al_destroy_event_queue(eq);
