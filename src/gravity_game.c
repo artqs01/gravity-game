@@ -1,3 +1,4 @@
+#include "init.h"
 #include "obj.h"
 #include "draw.h"
 #include "control.h"
@@ -27,59 +28,26 @@ int main()
 {
 	srand(time(0));
 	// Checking if things fail to init
-	if (!al_init())
-	{
-		printf("syf al_init");
-		return 1;
-	}
-	if (!al_install_keyboard())
-	{
-		printf("syf al_keyboard");
-		return 1;
-	}
-	if (!al_install_mouse())
-	{
-		printf("syf al_keyboard");
-		return 1;
-	}
-	if (!al_init_primitives_addon())
-	{
-		printf("syf al_primitives");
-		return 1;
-	}
-	if (!al_init_font_addon())
-	{
-		printf("syf al_font");
-		return 1;
-	}
-	if (!al_init_ttf_addon())
-	{
-		printf("syf al_font_ttf");
-		return 1;
-	}
+	
 
 	// Timer init
 	ALLEGRO_TIMER* timer =  al_create_timer(0.013);
 	al_start_timer(timer);
 
 	// Display init
-	ALLEGRO_DISPLAY* display = al_create_display(1200, 900);
+	ALLEGRO_DISPLAY* d = al_create_display(1200, 900);
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	// Event queue init
 	ALLEGRO_EVENT_QUEUE* eq = al_create_event_queue();
 	ALLEGRO_EVENT e;
-	al_register_event_source(eq, al_get_keyboard_event_source());
-	al_register_event_source(eq, al_get_timer_event_source(timer));
-	al_register_event_source(eq, al_get_keyboard_event_source());
-	al_register_event_source(eq, al_get_mouse_event_source());
-	al_register_event_source(eq, al_get_display_event_source(display));
+	allegro_register_events(eq, d, timer);
 
 	//Font init
 	ALLEGRO_FONT* font = al_load_ttf_font("/home/artqs01/Dane/MojeZabawyCCpp/gravity_game/fonts/consola.ttf", 20, 0);
 	if (!font)
 	{
-		printf("\n\nnie zaladowalo fonta\n\n");
+		printf("font not loaded\n");
 		return 1;
 	}
 
@@ -135,9 +103,9 @@ int main()
 		draw(arro, size, font);
 		al_flip_display();
 	}
-	
+
 	// Cleaning up
-	al_destroy_display(display);
+	al_destroy_display(d);
 	al_destroy_event_queue(eq);
 	al_destroy_timer(timer);
 	al_destroy_font(font);
