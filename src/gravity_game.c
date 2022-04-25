@@ -27,8 +27,9 @@ float rand_f(float down, float up)
 int main()
 {
 	srand(time(0));
-	// Checking if things fail to init
 	
+	// Checking if things fail to init
+	allegro_init();
 
 	// Timer init
 	ALLEGRO_TIMER* timer =  al_create_timer(0.013);
