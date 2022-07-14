@@ -17,7 +17,7 @@ ctrl_time_ctrler ctrl_create_time_ctrler()
 	return (ctrl_time_ctrler){0.0, al_get_time(), 0.f};
 }
 
-void ctrl_manage_event(ALLEGRO_EVENT_QUEUE* eq, ALLEGRO_EVENT *e, ctrl_loop_ctrler *l_ctrl)
+void ctrl_manage_event(ALLEGRO_EVENT_QUEUE* eq, ALLEGRO_EVENT *e, ctrl_loop_ctrler *l_ctrl, ctrl_cam_ctrler* c_ctrl)
 {
 	do
 	{
@@ -27,14 +27,30 @@ void ctrl_manage_event(ALLEGRO_EVENT_QUEUE* eq, ALLEGRO_EVENT *e, ctrl_loop_ctrl
 				l_ctrl->alive = 0;
 			break;
 			case ALLEGRO_EVENT_KEY_DOWN :
-				if (e->keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-					l_ctrl->alive = 0;
-				if (e->keyboard.keycode == ALLEGRO_KEY_P)
-					l_ctrl->pause = !l_ctrl->pause;
-				if (e->keyboard.keycode == ALLEGRO_KEY_S)
+				switch (e->keyboard.keycode)
 				{
-					l_ctrl->pause = 0;
-					l_ctrl->step = 1;
+					case ALLEGRO_KEY_ESCAPE :
+						l_ctrl->alive = 0;
+					break;
+					case ALLEGRO_KEY_P :
+						l_ctrl->pause = !l_ctrl->pause;
+					break;
+					case ALLEGRO_KEY_S :
+						l_ctrl->pause = 0;
+						l_ctrl->step = 1;
+					break;
+					case ALLEGRO_KEY_UP :
+						c_ctrl->ty += 20;
+					break;
+					case ALLEGRO_KEY_DOWN :
+						c_ctrl->ty -= 20;
+					break;
+					case ALLEGRO_KEY_LEFT :
+						c_ctrl->tx += 20;
+					break;
+					case ALLEGRO_KEY_RIGHT :
+						c_ctrl->tx -= 20;
+					break;
 				}
 			break;
 			case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN :			
@@ -72,6 +88,11 @@ void ctrl_set_zoom(ALLEGRO_MOUSE_STATE* cur_ms, ALLEGRO_MOUSE_STATE* prev_ms, ct
 		c_ctrl->sy = -pow(1.1, cur_ms->z);
 		c_ctrl->if_state_changed = 1;
 	}
+}
+
+void ctrl_set_position(ctrl_cam_ctrler *c_ctrl)
+{
+
 }
 
 void ctrl_measure_dt(ctrl_time_ctrler* t_ctrl)
